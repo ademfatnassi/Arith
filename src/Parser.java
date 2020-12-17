@@ -26,8 +26,32 @@ public class Parser {
 //        return null;
 //    }
     Node instr() {
-        return null;
+        Token currentToken = this.token;
+        if (currentToken.tokenType.equals(TokenType.Mc_set)) {
+            getNextToken();
+            if (!this.token.tokenType.equals(TokenType.Identifiant)) {
+                new Error(this.token.line, this.token.pos, "Invalid Syntax Error : Expected Identifiant").triggerError();
+            }
+            Token varNAme = this.token;
+            getNextToken();
+            if (!this.token.tokenType.equals(TokenType.Op_affectation)) {
+                new Error(this.token.line, this.token.pos, "Invalid Syntax Error : Expected '='").triggerError();
+            }
+            Token EqSign = this.token;
+            getNextToken();
+            Node expr = this.expr();
+            return new VarAssignNode(varNAme, expr);
+        }
+        else
+        if (currentToken.tokenType.equals(TokenType.Mc_print)) {
+            getNextToken();
+            Node expr = this.expr();
+            return new UnaryOpNode(currentToken,expr);
+        }
+        new Error(this.token.line, this.token.pos, "Invalid Syntax Error : Expected keyword").triggerError();
+        return new Node();
     }
+
 
     Node expr() {
         Node left = this.term();
@@ -59,13 +83,17 @@ public class Parser {
         if (currentToken.tokenType.equals(TokenType.Op_addition) || currentToken.tokenType.equals(TokenType.Op_soustraction)) {
             getNextToken();
             Node factor = this.factor();
-            return new UnaryOpNode(currentToken,factor);
-        }
-        else if (currentToken.tokenType.equals(TokenType.entier) || currentToken.tokenType.equals(TokenType.Identifiant)) {
+            return new UnaryOpNode(currentToken, factor);
+        } else if (currentToken.tokenType.equals(TokenType.entier)) {
             getNextToken();
 //            result.register(this.getNextToken());
 //            return result.success(new NumberNode(currentToken));
             return new NumberNode(currentToken);
+        } else if (currentToken.tokenType.equals(TokenType.Identifiant)) {
+            getNextToken();
+//            result.register(this.getNextToken());
+//            return result.success(new NumberNode(currentToken));
+            return new VarAccessNode(currentToken);
         } else if (currentToken.tokenType.equals(TokenType.ParenGouche)) {
             getNextToken();
             Node expr = this.expr();
@@ -73,13 +101,13 @@ public class Parser {
                 getNextToken();
                 return expr;
             } else new Error(this.token.line, this.token.pos, "Invalid Syntax Error").triggerError();
-        }
+        } else new Error(this.token.line, this.token.pos, "Invalid Syntax Error").triggerError();
         return new Node();
 //        return result.failure(new Error(currentToken.line,currentToken.pos,"Invalid Syntax Error: Expected int"));
     }
 
     Node parse() {
-        Node res = this.expr();
+        Node res = this.instr();
         return res;
     }
 

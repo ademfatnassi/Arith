@@ -58,3 +58,37 @@ class UnaryOpNode extends Node{
         return "("+this.token+","+this.node+")";
     }
 }
+class printExprNode extends Node{
+    Node node;
+    public printExprNode(Node node) {
+        super();
+        this.node = node;
+    }
+
+    @Override
+    public String toString() {
+        return "("+this.node+")";
+    }
+}
+class VarAssignNode extends Node{
+    Node valueNode;
+    public VarAssignNode(Token varNameToken, Node valueNode) {
+        super(varNameToken);
+        this.valueNode = valueNode;
+    }
+
+    @Override
+    public String toString() {
+        return "("+this.token+","+this.valueNode+")";
+    }
+}
+class VarAccessNode extends Node{
+    public VarAccessNode(Token varNamToken) {
+        super(varNamToken);
+    }
+
+    @Override
+    public String toString() {
+        return "("+this.token+")";
+    }
+}
