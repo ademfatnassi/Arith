@@ -101,7 +101,30 @@ public class Parser {
                 getNextToken();
                 return expr;
             } else new Error(this.token.line, this.token.pos, "Invalid Syntax Error").triggerError();
-        } else new Error(this.token.line, this.token.pos, "Invalid Syntax Error").triggerError();
+        } else
+            if (currentToken.tokenType.equals(TokenType.Mc_let)){
+                getNextToken();
+                if (!this.token.tokenType.equals(TokenType.Identifiant)) {
+                    new Error(this.token.line, this.token.pos, "Invalid Syntax Error : Expected Identifiant").triggerError();
+                }
+                Token localVar = this.token;
+                getNextToken();
+                if (!this.token.tokenType.equals(TokenType.Op_affectation)) {
+                    new Error(this.token.line, this.token.pos, "Invalid Syntax Error : Expected '='").triggerError();
+                }
+                Token EqSign = this.token;
+                getNextToken();
+                Node exprLeft = this.expr();
+                Node assignVar = new VarAssignNode(localVar,exprLeft);
+                if (!this.token.tokenType.equals(TokenType.Mc_in)) {
+                    new Error(this.token.line, this.token.pos, "Invalid Syntax Error : Expected 'IN'").triggerError();
+                }
+                Token INkey = this.token;
+                getNextToken();
+                Node exprRight = this.expr();
+
+                return new BinOpNode(assignVar,INkey,exprRight);
+            }
         return new Node();
 //        return result.failure(new Error(currentToken.line,currentToken.pos,"Invalid Syntax Error: Expected int"));
     }
