@@ -2,11 +2,10 @@ import jdk.nashorn.internal.parser.Lexer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
+
     public static void main(String[] args) {
 //        Scanner scanner = new Scanner(System.in);
 //        while (true) {
@@ -23,26 +22,30 @@ public class Main {
                     source += s.nextLine() + "\n";
                 }
                 Tokenizer tokenizer = new Tokenizer(source);
-                tokenizer.AfficheTokens();
-            } catch(FileNotFoundException e) {
-//                error(-1, -1, "Exception: " + e.getMessage());
-                System.out.println("-1 -1 Exception: "+e.getMessage());
+                List list = tokenizer.AfficheTokens();
+                Parser parser = new Parser(list);
+                System.out.println(parser.parse());
+//                parser.parse();
+            } catch (FileNotFoundException e) {
+//                Tokenizer.error(-1, -1, "Exception: " + e.getMessage());
+                System.out.println("-1 -1 Exception: " + e.getMessage());
             }
         } else {
-//            error(-1, -1, "No args");
-            System.out.println("-1 -1 No args: ");
+              new Error(-1, -1, "No args");
+//            System.out.println("-1 -1 No args: ");
 
         }
     }
 }
 
-class Tokenizer{
+class Tokenizer {
     private String s;
     private char chr;
     private int position;
     private int line;
     private int pos;
     Map<String, TokenType> keywords = new HashMap<>();
+    List<Token> tokenList = new ArrayList<>();
 
     static void error(int line, int pos, String msg) {
         if (line > 0 && pos > 0) {
@@ -53,19 +56,19 @@ class Tokenizer{
         System.exit(1);
     }
 
-    Tokenizer(String source){
+    Tokenizer(String source) {
         this.s = source;
         this.chr = this.s.charAt(0);
         this.position = 0;
-        this.line=1;
-        this.pos=0;
+        this.line = 1;
+        this.pos = 0;
         this.keywords.put("set", TokenType.Mc_set);
         this.keywords.put("print", TokenType.Mc_print);
         this.keywords.put("let", TokenType.Mc_let);
         this.keywords.put("in", TokenType.Mc_in);
     }
 
-    char  getNextChar() {
+    char getNextChar() {
         this.pos++;
         this.position++;
         if (this.position >= this.s.length()) {
@@ -84,6 +87,7 @@ class Tokenizer{
         boolean is_number = true;
         String text = "";
 
+
         while (Character.isAlphabetic(this.chr) || Character.isDigit(this.chr) || this.chr == '_') {
             text += this.chr;
             if (!Character.isDigit(this.chr)) {
@@ -93,23 +97,23 @@ class Tokenizer{
         }
 
         if (text.equals("")) {
-            error(line, pos, String.format("identifer_or_integer unrecopgnized character: (%d) %c", (int)this.chr, this.chr));
+            error(line, pos, String.format("Unrecopgnized character: (%d) %c", (int) this.chr, this.chr));
         }
 
         if (Character.isDigit(text.charAt(0))) {
             if (!is_number) {
-                error(line, pos, String.format("invaslid number: %s", text));
+                error(line, pos, String.format("Invalid number: %s", text));
             }
             return new Token(TokenType.entier, text, line, pos);
         }
 
         if (this.keywords.containsKey(text)) {
-            return new Token(this.keywords.get(text), "", line, pos);
+            return new Token(this.keywords.get(text), text, line, pos);
         }
         return new Token(TokenType.Identifiant, text, line, pos);
     }
 
-    Token getToken(){
+    Token getToken() {
         int line, pos;
         while (Character.isWhitespace(this.chr)) {
             getNextChar();
@@ -117,25 +121,45 @@ class Tokenizer{
         line = this.line;
         pos = this.pos;
 
-        switch (this.chr){
-            case '(': getNextChar(); return new Token(TokenType.ParenGouche, "", line, pos);
-            case ')': getNextChar(); return new Token(TokenType.ParenDroit, "", line, pos);
-            case '+': getNextChar(); return new Token(TokenType.Op_addition, "", line, pos);
-            case '-': getNextChar(); return new Token(TokenType.Op_soustraction, "", line, pos);
-            case '*': getNextChar(); return new Token(TokenType.Op_multiplication, "", line, pos);
-            case '/': getNextChar(); return new Token(TokenType.Op_division, "", line, pos);
-            case '=': getNextChar(); return new Token(TokenType.Op_affectation, "", line, pos);
-            case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-            default: return identifier_or_integer(line, pos);
+        switch (this.chr) {
+            case '(':
+                getNextChar();
+                return new Token(TokenType.ParenGouche, "", line, pos);
+            case ')':
+                getNextChar();
+                return new Token(TokenType.ParenDroit, "", line, pos);
+            case '+':
+                getNextChar();
+                return new Token(TokenType.Op_addition, "", line, pos);
+            case '-':
+                getNextChar();
+                return new Token(TokenType.Op_soustraction, "", line, pos);
+            case '*':
+                getNextChar();
+                return new Token(TokenType.Op_multiplication, "", line, pos);
+            case '/':
+                getNextChar();
+                return new Token(TokenType.Op_division, "", line, pos);
+            case '=':
+                getNextChar();
+                return new Token(TokenType.Op_affectation, "", line, pos);
+            case '\u0000':
+                return new Token(TokenType.End_of_input, "", this.line, this.pos);
+            default:
+                return identifier_or_integer(line, pos);
         }
     }
 
-    void AfficheTokens(){
+    List AfficheTokens() {
         Token token;
         while ((token = getToken()).tokenType != TokenType.End_of_input) {
-            System.out.println(token);
+//            System.out.println(token);
+            this.tokenList.add(token);
         }
-        System.out.println(token);
+//        System.out.println(token);
+//        this.tokenList.add(token);
+        System.out.println(tokenList);
+        return tokenList;
     }
 }
 

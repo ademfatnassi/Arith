@@ -13,5 +13,6 @@ public enum TokenType {
     ParenGouche,
     ParenDroit,
     Identifiant,
-    entier
+    entier,
+    BAD
 }
