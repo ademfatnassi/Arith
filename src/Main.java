@@ -31,7 +31,7 @@ public class Main {
                 System.out.println("-1 -1 Exception: " + e.getMessage());
             }
         } else {
-              new Error(-1, -1, "No args");
+              new Error(-1, -1, "No args").triggerError();
 //            System.out.println("-1 -1 No args: ");
 
         }
@@ -124,27 +124,27 @@ class Tokenizer {
         switch (this.chr) {
             case '(':
                 getNextChar();
-                return new Token(TokenType.ParenGouche, "", line, pos);
+                return new Token(TokenType.ParenGouche, "(", line, pos);
             case ')':
                 getNextChar();
-                return new Token(TokenType.ParenDroit, "", line, pos);
+                return new Token(TokenType.ParenDroit, ")", line, pos);
             case '+':
                 getNextChar();
-                return new Token(TokenType.Op_addition, "", line, pos);
+                return new Token(TokenType.Op_addition, "+", line, pos);
             case '-':
                 getNextChar();
-                return new Token(TokenType.Op_soustraction, "", line, pos);
+                return new Token(TokenType.Op_soustraction, "-", line, pos);
             case '*':
                 getNextChar();
-                return new Token(TokenType.Op_multiplication, "", line, pos);
+                return new Token(TokenType.Op_multiplication, "*", line, pos);
             case '/':
                 getNextChar();
-                return new Token(TokenType.Op_division, "", line, pos);
+                return new Token(TokenType.Op_division, "/", line, pos);
             case '=':
                 getNextChar();
-                return new Token(TokenType.Op_affectation, "", line, pos);
+                return new Token(TokenType.Op_affectation, "=", line, pos);
             case '\u0000':
-                return new Token(TokenType.End_of_input, "", this.line, this.pos);
+                return new Token(TokenType.End_of_input, "\u0000", this.line, this.pos);
             default:
                 return identifier_or_integer(line, pos);
         }

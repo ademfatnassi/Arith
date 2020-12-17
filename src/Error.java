@@ -7,6 +7,9 @@ class Error {
         this.line = line;
         this.pos = pos;
         this.msg = msg;
+
+    }
+    void triggerError(){
         if (line > 0 && pos > 0) {
             System.out.printf("%s in line %d, pos %d\n", msg, line, pos);
         } else {

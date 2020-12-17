@@ -45,3 +45,16 @@ class BinOpNode extends Node {
         return "("+this.left+", "+this.token+", "+this.right+")";
     }
 }
+
+class UnaryOpNode extends Node{
+    Node node;
+    public UnaryOpNode(Token token, Node node) {
+        super(token);
+        this.node = node;
+    }
+
+    @Override
+    public String toString() {
+        return "("+this.token+","+this.node+")";
+    }
+}
