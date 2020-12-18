@@ -7,42 +7,9 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-//        Scanner scanner = new Scanner(System.in);
-//        while (true) {
-//            System.out.print(">");
-//            String input = scanner.nextLine();
-//        }
-        if (args.length > 0) {
-            try {
-
-                File f = new File(args[0]);
-                Scanner s = new Scanner(f);
-                String source = " ";
-                while (s.hasNext()) {
-                    source += s.nextLine() + "\n";
-                }
-                Tokenizer tokenizer = new Tokenizer(source);
-                List list = tokenizer.AfficheTokens();
-                Parser parser = new Parser(list);
-                System.out.println(parser.parse());
-//                parser.parse();
-            } catch (FileNotFoundException e) {
-//                Tokenizer.error(-1, -1, "Exception: " + e.getMessage());
-                System.out.println("-1 -1 Exception: " + e.getMessage());
-            }
-        } else {
-              new Error(-1, -1, "No args").triggerError();
-//            System.out.println("-1 -1 No args: ");
-
-        }
-    }
-}
-
-/*
-    public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
         while (true) {
-            System.out.print(">");
+            System.out.print("Arith>");
             String input = s.nextLine();
 //            String source = " ";
 //            while (s.hasNext()) {
@@ -53,7 +20,38 @@ public class Main {
             Parser parser = new Parser(list);
             System.out.println(parser.parse());
         }
-     }
+    }
+
+//    public static void main(String[] args) {
+//
+//        if (args.length > 0) {
+//            try {
+//
+//                File f = new File(args[0]);
+//                Scanner s = new Scanner(f);
+//                String source = " ";
+//                while (s.hasNext()) {
+//                    source += s.nextLine() + "\n";
+//                }
+//                Tokenizer tokenizer = new Tokenizer(source);
+//                List list = tokenizer.AfficheTokens();
+//                Parser parser = new Parser(list);
+//                System.out.println(parser.parse());
+////                parser.parse();
+//            } catch (FileNotFoundException e) {
+////                Tokenizer.error(-1, -1, "Exception: " + e.getMessage());
+//                System.out.println("-1 -1 Exception: " + e.getMessage());
+//            }
+//        } else {
+//              new Error(-1, -1, "No args").triggerError();
+////            System.out.println("-1 -1 No args: ");
+//
+//        }
+//    }
+}
+
+/*
+
 */
 
 class Tokenizer {
@@ -180,171 +178,3 @@ class Tokenizer {
         return tokenList;
     }
 }
-
-//import java.util.Scanner;
-//
-//public class Main {
-//    public static void main(String[] args) {
-//        Scanner scanner = new Scanner(System.in);
-//        while (true) {
-//            System.out.print(">");
-//            String input = scanner.nextLine();
-//            if (isNullOrWhitespace(input)) {
-//                return;
-//            }
-//            Lexer lexer = new Lexer(input);
-////            System.out.println(lexer);
-//
-//            while (true) {
-//                SyntaxToken token = lexer.nextToken();
-////                System.out.println(token);
-//                if (token.kind == SyntaxKind.endOfFileToken) {
-//                    break;
-//                }
-//                System.out.printf("%s: %s%n", token.kind, token.text);
-//                if (token.value!= null){
-//                    System.out.println(token.value);
-//                }
-//            }
-////            if (input.equals("1 + 2 + 3")) {
-////                System.out.println("7");
-////            } else {
-////                System.out.println("ERROR: Invalid expression!");
-////            }
-//        }
-//    }
-//
-//    public static boolean isNullOrEmpty(String s) {
-//        return s == null || s.length() == 0;
-//    }
-//
-//    public static boolean isNullOrWhitespace(String s) {
-//        return s == null || isWhitespace(s);
-//
-//    }
-//
-//    private static boolean isWhitespace(String s) {
-//        int length = s.length();
-//        if (length > 0) {
-//            for (int i = 0; i < length; i++) {
-//                if (!Character.isWhitespace(s.charAt(i))) {
-//                    return false;
-//                }
-//            }
-//            return true;
-//        }
-//        return false;
-//    }
-//}
-//
-//enum SyntaxKind {whiteSpaceToken, plusToken, minusToken, starToken, slashToken, openParenthesisToken, closeParenthesisToken, endOfFileToken, BadToken, numberToken}
-//
-//class SyntaxToken {
-//    public SyntaxKind kind;
-//    public int position;
-//    public String text;
-//    public Object value;
-//
-//    public SyntaxToken(SyntaxKind kind, int position, String text, Object value) {
-//        this.kind = kind;
-//        this.position = position;
-//        this.text = text;
-//        this.value = value;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "SyntaxToken{" +
-//                "kind=" + kind +
-//                ", position=" + position +
-//                ", text='" + text + '\'' +
-//                ", value=" + value +
-//                '}';
-//    }
-//}
-//
-//class Lexer {
-//    private String text;
-//    private int position;
-//
-//    @Override
-//    public String toString() {
-//        return "Lexer{" +
-//                "text='" + text + '\'' +
-//                ", position=" + position +
-//                ", current=" + current +
-//                '}';
-//    }
-//
-//    public Lexer(String text) {
-//        this.text = text;
-//        if (position >= text.length())
-//            this.current= '\0';
-//        this.current= text.charAt(position);
-//    }
-//
-//    private char current;
-//
-//    SyntaxToken nextToken() {
-//        // <numbers>
-//        // + - * ( )
-//        // whitespaces
-//
-//        if (position >= text.length()) return new SyntaxToken(SyntaxKind.endOfFileToken, position, "\0", null);
-////        System.out.println("isdigit"+Character.isDigit(getCurrent())+getCurrent());
-//        if (Character.isDigit(getCurrent())) {
-//            int start = position;
-////            System.out.println("start"+position);
-//
-//            while (Character.isDigit(getCurrent()))
-//                next();
-////            System.out.println("end"+position);
-//
-//            int length = position - start;
-////            System.out.println("digit length!"+length);
-//            String text = this.text.substring(start, length);
-////            System.out.println("digit text"+text);
-//            int value = Integer.parseInt(text);
-//            return new SyntaxToken(SyntaxKind.numberToken, start, text, value);
-//        }
-//        if (Character.isWhitespace(getCurrent())) {
-//            int start = position;
-//            while (Character.isWhitespace(getCurrent()))
-//                next();
-//            int length = position - start;
-//            String text = this.text.substring(start, length);
-//            return new SyntaxToken(SyntaxKind.whiteSpaceToken, start, text, null);
-//        }
-//
-//        if (getCurrent() == '+') {
-//            return new SyntaxToken(SyntaxKind.plusToken, position++, "+", null);
-//        }
-//        if (getCurrent() == '-') {
-//            return new SyntaxToken(SyntaxKind.minusToken, position++, "-", null);
-//        }
-//        if (getCurrent() == '*') {
-//            return new SyntaxToken(SyntaxKind.starToken, position++, "*", null);
-//        }
-//        if (getCurrent() == '/') {
-//            return new SyntaxToken(SyntaxKind.slashToken, position++, "/", null);
-//        }
-//        if (getCurrent() == '(') {
-//            return new SyntaxToken(SyntaxKind.openParenthesisToken, position++, "(", null);
-//        }
-//        if (getCurrent() == ')') {
-//            return new SyntaxToken(SyntaxKind.closeParenthesisToken, position++, ")", null);
-//        }
-//        System.out.println(position);
-//        return new SyntaxToken(SyntaxKind.BadToken, position++, text.substring(position-1,1), null);
-//    }
-//
-//    private void next() {
-//        position++;
-//    }
-//
-//    private char getCurrent() {
-//        if (position >= text.length())
-//            return '\0';
-//        return text.charAt(position);
-//    }
-//}
