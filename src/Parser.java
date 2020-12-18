@@ -140,38 +140,3 @@ public class Parser {
     }
 
 }
-
-class ParseResult {
-    Node node = null;
-    Error error = null;
-
-    public ParseResult(Node node, Error error) {
-        this.node = node;
-        this.error = error;
-    }
-
-    public ParseResult() {
-
-    }
-
-    Node register(Object res) {
-        if (res instanceof ParseResult) {
-            if (!((ParseResult) res).error.msg.isEmpty()) {
-                this.error = ((ParseResult) res).error;
-            }
-            return ((ParseResult) res).node;
-        }
-        return (Node) res;
-    }
-
-    ParseResult success(Node node) {
-        this.node = node;
-        return this;
-    }
-
-    ParseResult failure(Error error) {
-        this.error = error;
-        return this;
-    }
-
-}
