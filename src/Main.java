@@ -104,7 +104,7 @@ class Tokenizer {
         String text = "";
 
 
-        while (Character.isAlphabetic(this.chr) || Character.isDigit(this.chr) || this.chr == '_') {
+        while (Character.isAlphabetic(this.chr) || Character.isDigit(this.chr)) {
             text += this.chr;
             if (!Character.isDigit(this.chr)) {
                 is_number = false;
