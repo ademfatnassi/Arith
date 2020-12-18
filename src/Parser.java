@@ -23,8 +23,13 @@ public class Parser {
 
     //
 //    Node listInstr(){
-//        return null;
+//        Node instr = this.instr();
+//        while(!this.token.tokenType.equals(TokenType.End_of_input)){
+//            Node listInstr = this.listInstr();
+//        }
+//        return new Node();
 //    }
+
     Node instr() {
         Token currentToken = this.token;
         if (currentToken.tokenType.equals(TokenType.Mc_set)) {

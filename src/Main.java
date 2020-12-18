@@ -38,6 +38,24 @@ public class Main {
     }
 }
 
+/*
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        while (true) {
+            System.out.print(">");
+            String input = s.nextLine();
+//            String source = " ";
+//            while (s.hasNext()) {
+//                source += s.nextLine() + "\n";
+//            }
+            Tokenizer tokenizer = new Tokenizer(input);
+            List list = tokenizer.AfficheTokens();
+            Parser parser = new Parser(list);
+            System.out.println(parser.parse());
+        }
+     }
+*/
+
 class Tokenizer {
     private String s;
     private char chr;

@@ -14,5 +14,5 @@ public enum TokenType {
     ParenDroit,
     Identifiant,
     entier,
-    BAD
+    retour
 }
